@@ -1,17 +1,19 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import {Button} from '../src/components/ui/button'
+import { BrowserRouter, Routes ,Route, Navigate} from 'react-router-dom'
+import Auth from './pages/auth'
+import ProfilePage from './pages/profile'
+import Chat from './pages/chat'
 
-function App() {
-  const [count, setCount] = useState(0)
-
+const App = () => {
   return (
-    <>
-     <Button>dsdsf</Button>
-    </>
-  )
-}
+    <BrowserRouter>
+    <Routes>
+      <Route path="/auth" element={<Auth />} />
+      {/* <Route path="/auth" element={<Auth />} /> */}
+      <Route path="/chat" element={<Chat />} />
+      <Route path="/profile" element={<ProfilePage />} />
+      <Route path="*" element={<Navigate to="auth"  />} />
 
-export default App
+      </Routes>
+      </BrowserRouter>)}
+
+      export default App
