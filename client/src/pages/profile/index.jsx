@@ -1,9 +1,23 @@
-import React from 'react'
+import { useAppStore } from '@/store'
 
 const ProfilePage = () => {
-  return (
-    <div>ProfilePage</div>
-  )
+  const { userInfo } = useAppStore()
+
+
+
+
+console.log('userInfo', userInfo)
+
+
+
+
+
+
+
+
+
+  return <div>ProfilePage {userInfo?.email}</div>
+  
 }
 
 export default ProfilePage

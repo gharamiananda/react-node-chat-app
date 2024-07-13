@@ -6,15 +6,77 @@ import login2Img from "../../assets/login2.png"
 import { useState } from "react"
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { apiClient } from "@/lib/api-client";
+import { LOGIN_ROUTE, SIGNUP_ROUTE } from "@/utils/constants";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
+import { useAppStore } from "@/store";
 
 const AuthPage = () => {
 
     const [email, setEmail] = useState('');
-    const [passwprd, setpasswprd] = useState('');
+    const [password, setpassword] = useState('');
     const [confrimPassword, setconfrimPassword] = useState('');
+  const { setUserInfo } = useAppStore();
 
-    const handleLogin=async() => {};
-    const handleSignup=async() => {};
+  const navigate=useNavigate();
+
+    const handleLogin=async() => {
+      try {
+        
+      const res=await apiClient.post(LOGIN_ROUTE,{
+        email,
+        password
+      },{
+        withCredentials: true,
+      });
+if(res?.data?.token){
+  toast.success(res?.data?.message);
+console.log('res?.data?.user', res?.data?.user)
+
+  setUserInfo(res?.data?.user)
+  const navigateUrl=res?.data?.user?.profileSetup ? '/chat' :'/profile'
+  navigate(navigateUrl)
+}
+
+      console.log(res)
+      } catch (error) {
+        toast.error('Error') 
+         }
+    };
+    const handleSignup=async() => {
+
+      try {
+
+
+        const res=await apiClient.post(SIGNUP_ROUTE,{
+          email,
+          password
+        },{
+          withCredentials: true,
+        });
+  
+        console.log(res)
+
+if(res?.data?.token){
+  toast.success(res?.data?.message);
+console.log('res?.data?.user', res?.data?.user)
+
+  setUserInfo(res?.data?.user)
+    const navigateUrl=res?.data?.user?.profileSetup ? '/chat' :'/profile';
+
+  navigate(navigateUrl)
+}
+
+        
+      } catch (error) {
+        toast.error('Error') 
+        
+      }
+
+     
+    
+    };
 
 
   return (
@@ -59,7 +121,7 @@ const AuthPage = () => {
 <Input 
     
     placeholder='Password'
-    className='rounded-full p-6' value={passwprd} onChange={e=>setpasswprd(e.target.value)}    />
+    className='rounded-full p-6' value={password} onChange={e=>setpassword(e.target.value)}    />
     <Button  className='rounded-full p-6' onClick={handleLogin}>Login</Button>
 
   </TabsContent>
@@ -72,7 +134,7 @@ const AuthPage = () => {
 <Input 
     
     placeholder='Password'
-    className='rounded-full p-6' value={passwprd} onChange={e=>setpasswprd(e.target.value)}    />
+    className='rounded-full p-6' value={password} onChange={e=>setpassword(e.target.value)}    />
 
 <Input 
     
