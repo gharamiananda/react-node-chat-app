@@ -9,6 +9,7 @@ import { Server } from 'socket.io';
 import { createServer, METHODS } from 'http'
 import authRoute from './routes/auth.route.js';
 import contactRoute from './routes/contact.route.js';
+import setupSocket from './socketio.js';
 dotenv.config();
 
 const port= process.env.PORT || 3001;
@@ -29,17 +30,17 @@ app.use(express.json());
 
 connectDB(process.env.MONGODB_URI);
 
-const server = createServer(app)
-const io = new Server(server);
+// const server = createServer(app)
+// const io = new Server(server);
 
 
-io.on('connection', (socket) => {
-  console.log('a user connected', socket);
+// io.on('connection', (socket) => {
+//   console.log('a user connected', socket);
 
-  socket.on('disconnect', () => {
-    console.log('user disconnected');
-  });
-});
+//   socket.on('disconnect', () => {
+//     console.log('user disconnected');
+//   });
+// });
 
 app.use('/api/v1/auth', authRoute);
 app.use('/api/v1/contacts', contactRoute);
@@ -52,6 +53,7 @@ app.get('/', (req, res) => {
 // app.use(errorMiddleware);
 
 // server.listen(port)
-app.listen(port,()=>{
+ const server= app.listen(port,()=>{
     console.log(`server listening on ${port}`);
 })
+setupSocket(server)

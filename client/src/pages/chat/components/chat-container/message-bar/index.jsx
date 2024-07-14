@@ -9,12 +9,18 @@ import {
 import { RiEmojiStickerLine } from 'react-icons/ri';
 import { IoSend } from 'react-icons/io5';
 import EmojiPicker from 'emoji-picker-react';
+import { useSocket } from '@/context/socketContext';
 
 const MessageBar= () => {
 
+  const socket=useSocket()
 
   const navigate=useNavigate();
-  const {userInfo}=useAppStore();
+  const {userInfo,
+
+    selectChatType ,
+    selectChatData,
+  }=useAppStore();
 const emojiRef=useRef();
 
 
@@ -29,7 +35,6 @@ if(!userInfo?.profileSetup){
 navigate('/profile')
 }
 },[userInfo,navigate]);
-
 
 useEffect(()=>{
   function clickOutSIde(){
@@ -50,7 +55,15 @@ if(emojiRef.current && !emojiRef.current.contains(event.target))
 
 
 const handleSendMessage=async()=>{
-
+if(selectChatType==='contact'){
+  socket.emit('sendMessage',{
+    sender:userInfo?._id,
+    content:message,
+    recipient:selectChatData?._id,
+    messageTye:'text',
+    fileUrl:''
+  })
+}
 }
 
 const handleEmoji=(emoji)=>{
