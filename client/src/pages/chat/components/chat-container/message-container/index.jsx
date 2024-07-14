@@ -26,7 +26,7 @@ useEffect(()=>{
 
 
 const renderDmMessage=(message)=>{
-return<div>
+return<div  >
 
 </div>
 }
