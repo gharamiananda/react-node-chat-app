@@ -34,6 +34,33 @@ console.log('user', user)
 
 
 
+export const logout = async(req, res, next) => {
+
+
+
+    try {
+
+        await res.cookie('ananda-chat-app',"",{
+            maxAge: 1,
+            secure: true,
+            sameSite: 'none'
+        })
+
+
+        return res.status(200).send('Logout successfully')
+
+        
+    } catch (error) {
+        
+        
+        return res.status(500).send('Internal server error!')
+
+
+    }
+}
+
+
+
 export const login = async(req, res, next) => {
 
 

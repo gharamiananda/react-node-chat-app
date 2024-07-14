@@ -8,6 +8,7 @@ import cookieParser from 'cookie-parser'
 import { Server } from 'socket.io';
 import { createServer, METHODS } from 'http'
 import authRoute from './routes/auth.route.js';
+import contactRoute from './routes/contact.route.js';
 dotenv.config();
 
 const port= process.env.PORT || 3001;
@@ -41,6 +42,9 @@ io.on('connection', (socket) => {
 });
 
 app.use('/api/v1/auth', authRoute);
+app.use('/api/v1/contacts', contactRoute);
+
+
 app.get('/', (req, res) => {
   res.send('Welcome to chattu');
 });
